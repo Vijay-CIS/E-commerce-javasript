@@ -1,6 +1,11 @@
 let label = document.getElementById("label");
+let orders = document.getElementById("orders");
 let shoppingCart = document.getElementById("shopping-cart");
-let totalAmount = document.getElementById("total");
+let totalAmount = document.getElementById("total").children[0];
+let  itemName = document.getElementById("total").children[0];
+
+
+
 let basket = JSON.parse(localStorage.getItem("data")) || [];
 
 let calculation = () =>{
@@ -62,6 +67,34 @@ let createCart =() =>{
 
 createCart();
 
+let createName = () =>{
+  if(basket!==0){
+  
+    let name = basket.map((x)=>{
+      let {id, item}=x;
+      let search = itemsData.find((y)=>y.id === id)||[];
+      return search.productName;
+    })
+    
+    itemName.innerHTML =` <div class="card-header text-center">
+    Order Total
+    </div>
+    <div  class="card-body text-center align-items-center "> ${name}
+    
+     </div>
+    `;
+ 
+  }
+  else return;
+
+  
+  
+  
+};
+
+createName();
+ 
+
 
 let createTotal = () =>{
     if(basket!==0){
@@ -70,17 +103,7 @@ let createTotal = () =>{
           let search = itemsData.find((y)=>y.id === id)||[];
           return item*search.price;
         }).reduce((x,y)=>x+y,0);
-        totalAmount.innerHTML =` <div class="card">
-                   
-        <div class="card-header text-center">
-         Order Total
-        </div>
-        <div class="card-body text-center align-items-center ">
-    
-        <h5 class="card-title"></h5>      
-            
-         
-        </div>
+        totalAmount.innerHTML +=` 
         <div class="card-footer text-center align-items-center">
           <h6 class="text-nowrap">Total Amount: ₹${amount} </h6>
           <div class="d-flex text-center justify-content-center ">
@@ -88,13 +111,13 @@ let createTotal = () =>{
           <a href="#" class="btn btn-sm btn-outline-danger m-2 text-nowrap">Clear Cart</a>
         </div>
         </div>
-      </div>`;
-    }
-    else
-        return;
+      `;
+
+      }
+else return;
+    
     };
-        
-        
+
 createTotal();
 
 
@@ -111,6 +134,7 @@ let increment = (id)=>{
      search.item +=1;
   }
   createCart();
+  createName();
 update(selectedItem.id);
 localStorage.setItem("data",JSON.stringify(basket));
 
@@ -129,6 +153,8 @@ let decrement = (id) =>{
     update(selectedItem.id);
     basket = basket.filter((x)=>x.item!==0);
     createCart();
+    createName();
+    createTotal();
     localStorage.setItem("data",JSON.stringify(basket));
 
 };
@@ -137,8 +163,9 @@ let decrement = (id) =>{
 let update = (id) =>{
     let search = basket.find((x)=>x.id === id);
     document.getElementById(id).innerHTML =search.item;
-   calculation();
-   createTotal();
+    calculation();
+    createName();
+    createTotal();
 };
 
 
