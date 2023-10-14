@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@900&family=Roboto:wght@300;400;500&display=swap');
+
+
+*{
+    font-family: 'Maven Pro', sans-serif;
+    /* font-family: 'Roboto', sans-serif; */
+    text-transform:capitalize;
+    margin: 0;
+    padding: 0;
+}
+
+
+.hero-img{
+
+   max-height:850px;
+
+}
